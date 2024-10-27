@@ -1,15 +1,24 @@
 
 public class EndStation extends Station{
 
-    public EndStation(String name, String lineColor){
-        super(name, lineColor);
+    public EndStation(String lineColor, String name){
+        super(lineColor, name);
     }
 
     public void makeEnd(){
+        if(this.next != null){
         this.previous = this.next;
+        }
+
+        if(this.previous != null){
+        this.next = this.previous;
+        }
+        //this.previous = null;
+        //this.next = null;
     }
 
     public String toString(){
-        return "ENDSTATION " + name + ": " + lineColor + ", in service: " + inService + ", previous station: " + previous + ", next station: " + next;
+        return "END" + super.toString();
+        //+ name + ": " + lineColor + " line, in service:" + inService + ", previous station: " + prevName + ", next station: " + nextName ;
     }
 }

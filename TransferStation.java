@@ -23,7 +23,7 @@ public class TransferStation extends Station {
     }
 
     public String toString(){
-        String start = "TRANSFER" + super.toString() + "\n\tTransfers: \n";
+        String start = "TRANSFER" + super.toString() + "\n\tTransfers: \n"; //calling on toString method from Station
         if (otherStations != null){
             for (int i = 0; i < otherStations.size(); i++){
                 start = start + "\t" + otherStations.get(i).toString() + "\n";

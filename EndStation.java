@@ -13,12 +13,10 @@ public class EndStation extends Station{
         if(this.previous != null){
         this.next = this.previous;
         }
-        //this.previous = null;
-        //this.next = null;
     }
 
     public String toString(){
-        return "END" + super.toString();
+        return "END" + super.toString();//calling on toString method from Station 
         //+ name + ": " + lineColor + " line, in service:" + inService + ", previous station: " + prevName + ", next station: " + nextName ;
     }
 }

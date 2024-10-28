@@ -9,7 +9,7 @@ public class Station {
     protected Station next;//connection to next station 
 
 
-    public Station(String lineColor, String name){
+    public Station(String lineColor, String name){//initializing 
         this.lineColor = lineColor;
         this.name = name;
         this.inService = true; 
@@ -18,7 +18,7 @@ public class Station {
     }                                                       
 
     public void addNext(Station n){
-        //need a null checker?
+        //need a null checker
         if(n != null){
         this.next = n;
         n.previous = this;  
@@ -26,7 +26,7 @@ public class Station {
     }
 
     public void addPrev(Station p){
-        //need a null checker?
+        //need a null checker
         if(p != null){
         this.previous = p;                   
         p.next = this; 
@@ -46,47 +46,45 @@ public class Station {
     }
 
 
-    int tripLength(Station dest) {
-        ArrayList<Station> visit = new ArrayList<Station>();
+    public int tripLength(Station destination) {
+        ArrayList<Station> visitedStations = new ArrayList<Station>();
         Station current = this;
         //System.out.println(this.toString());
-        return tripLength_helper(dest, 0, current, visit);
+        return tripLength_helper(destination, 0, current, visitedStations);
     }
 
 
-     int tripLength_helper(Station dest, int count, Station current, ArrayList<Station> visit){
-        if(current.equals(dest)){
+     public int tripLength_helper(Station destination, int count, Station current, ArrayList<Station> visitedStations){
+        if(current.equals(destination)){
             return count;
         }
         if(current.next == null){
             return -1;
         }
-        for(int i = 0; i < visit.size(); i++) {
-            if(visit.get(i) == current) {
+        for(int i = 0; i < visitedStations.size(); i++) {
+            if(visitedStations.get(i) == current) {
                 return -1;
             }
         }
-        visit.add(current);
+        visitedStations.add(current);
 
         if(current instanceof TransferStation){
             TransferStation transfer = (TransferStation) current;
 
             for(int i = 0; i < transfer.otherStations.size(); i++){
                 Station t = transfer.otherStations.get(i);
-                if(t.lineColor == dest.lineColor){
-                    int transferpath = tripLength_helper(dest, count + 1, t, visit);
+                if(t.lineColor == destination.lineColor){
+                    int transferpath = tripLength_helper(destination, count + 1, t, visitedStations);
                     if(transferpath != -1){
                         return transferpath;
                     }
                 }
             }
         }
-        return tripLength_helper(dest, count + 1, current.next, visit);
+        return tripLength_helper(destination, count + 1, current.next, visitedStations);
     }
 
     public void connect(Station s) {
-        //this.next = s;
-        //s.previous = this;
         if(s != null) {
             this.addNext(s);
             s.addPrev(this);
@@ -98,30 +96,26 @@ public class Station {
     }
 
     public void switchAvailable(){
-        this.inService = !this.inService; 
-    }
-
-    public String getPreviousName(){
-        if (previous == null || previous.name == null){
-            return "none";
-        }
-        else{
-            return previous.name;
-        }
-    }
-
-    public String getNextName(){
-        if (next == null || next.name == null){
-            return "none";
-        }
-        else{
-            return next.name;
-        }
+        this.inService = !this.inService; //switching from inService to not inService, therefore switching the availability 
     }
 
     public String toString(){
-        String prevName = getPreviousName();
-        String nextName = getNextName();
+        String prevName = "";
+        String nextName = "";
+
+        if(previous == null || previous.name == null){//checking whether there is a previous station or not
+            prevName = "none"; //returning null if station does not exist
+        }
+        else{
+            prevName = previous.name;//returning name as usual
+        }
+        if(next == null || next.name == null){
+            nextName = "none";//returning null is station does not exist
+        }
+        else{
+            nextName = next.name;//returning name as usual
+        }
+
         return "STATION " + this.name + ": " + this.lineColor + " line, in service: " + this.inService + ", previous station: " + prevName + ", next station: " + nextName ; 
     }
 

@@ -10,6 +10,9 @@ public class TransferStation extends Station {
     }
 
     public void addTransferStationPrev(Station s){
+        if(s == null) {
+            return;
+        }
         otherStations.add(s);
         s.next = this;
     }

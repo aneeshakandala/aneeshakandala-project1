@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Station {
 
     protected String name;//name of station
@@ -21,9 +23,6 @@ public class Station {
         this.next = n;
         n.previous = this;  
         }                            
-        // if (n != null){
-        //     this.next = n; 
-        // }
     }
 
     public void addPrev(Station p){
@@ -32,9 +31,6 @@ public class Station {
         this.previous = p;                   
         p.next = this; 
         }
-        // if (p != null){
-        //     this.previous = p;
-        // }
     }
 
     public boolean equals(Station s){
@@ -44,25 +40,57 @@ public class Station {
        if(this.lineColor == s.lineColor && this.name == s.name){
             return true;
         }
-        else{
-            return false;
-        }
+        
+        return false;
 
     }
 
-    // public void tripLength_helper (){
-    //     return ; 
 
-    // }
-    
-    public int tripLength(Station dest){
-        return 0;
-        //call on helper function
+    int tripLength(Station dest) {
+        ArrayList<Station> visit = new ArrayList<Station>();
+        Station current = this;
+        //System.out.println(this.toString());
+        return tripLength_helper(dest, 0, current, visit);
+    }
+
+
+     int tripLength_helper(Station dest, int count, Station current, ArrayList<Station> visit){
+        if(current.equals(dest)){
+            return count;
+        }
+        if(current.next == null){
+            return -1;
+        }
+        for(int i = 0; i < visit.size(); i++) {
+            if(visit.get(i) == current) {
+                return -1;
+            }
+        }
+        visit.add(current);
+
+        if(current instanceof TransferStation){
+            TransferStation transfer = (TransferStation) current;
+
+            for(int i = 0; i < transfer.otherStations.size(); i++){
+                Station t = transfer.otherStations.get(i);
+                if(t.lineColor == dest.lineColor){
+                    int transferpath = tripLength_helper(dest, count + 1, t, visit);
+                    if(transferpath != -1){
+                        return transferpath;
+                    }
+                }
+            }
+        }
+        return tripLength_helper(dest, count + 1, current.next, visit);
     }
 
     public void connect(Station s) {
-        this.next = s;
-        s.previous = this;
+        //this.next = s;
+        //s.previous = this;
+        if(s != null) {
+            this.addNext(s);
+            s.addPrev(this);
+        }
     }
 
     public boolean isAvailable(){

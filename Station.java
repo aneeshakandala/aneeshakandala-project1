@@ -50,8 +50,14 @@ public class Station {
 
     }
 
+    // public void tripLength_helper (){
+    //     return ; 
+
+    // }
+    
     public int tripLength(Station dest){
         return 0;
+        //call on helper function
     }
 
     public void connect(Station s) {
